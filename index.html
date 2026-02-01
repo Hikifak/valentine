@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Valentine's Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,500&family=Lora:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1a0a0e;
+    color: #f5e6e8;
+    font-family: 'Lora', serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Soft ambient glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(180, 50, 70, 0.25) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating petals */
+  .petal {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #c94060, #7a1e30);
+    border-radius: 50% 0 50% 50%;
+    opacity: 0;
+    animation: fall linear infinite;
+    z-index: 0;
+  }
+  .petal:nth-child(1)  { left: 10%; animation-duration: 8s;  animation-delay: 0s;   width:10px; height:10px; }
+  .petal:nth-child(2)  { left: 20%; animation-duration: 11s; animation-delay: 2s;   width:8px;  height:8px;  }
+  .petal:nth-child(3)  { left: 35%; animation-duration: 9s;  animation-delay: 4s;   width:14px; height:14px; }
+  .petal:nth-child(4)  { left: 50%; animation-duration: 12s; animation-delay: 1s;   width:7px;  height:7px;  }
+  .petal:nth-child(5)  { left: 65%; animation-duration: 10s; animation-delay: 3s;   width:11px; height:11px; }
+  .petal:nth-child(6)  { left: 78%; animation-duration: 8s;  animation-delay: 5s;   width:9px;  height:9px;  }
+  .petal:nth-child(7)  { left: 88%; animation-duration: 13s; animation-delay: 0.5s; width:13px; height:13px; }
+  .petal:nth-child(8)  { left: 5%;  animation-duration: 10s; animation-delay: 6s;   width:6px;  height:6px;  }
+
+  @keyframes fall {
+    0%   { top: -20px; opacity: 0;   transform: rotate(0deg) translateX(0); }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.4; }
+    100% { top: 105vh; opacity: 0;   transform: rotate(360deg) translateX(40px); }
+  }
+
+  /* Main card */
+  .card {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 40px;
+    max-width: 520px;
+    width: 90%;
+    animation: fadeUp 1.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Heart */
+  .heart {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 30px;
+    animation: heartbeat 1.4s ease infinite;
+  }
+  .heart svg {
+    width: 100%;
+    height: 100%;
+    fill: #c94060;
+    filter: drop-shadow(0 0 12px rgba(201, 64, 96, 0.5));
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    15%      { transform: scale(1.15); }
+    30%      { transform: scale(1); }
+    45%      { transform: scale(1.08); }
+    60%      { transform: scale(1); }
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #c94060, transparent);
+    margin: 0 auto 28px;
+  }
+
+  /* Title */
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    font-style: italic;
+    color: #f0d0d5;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    animation: fadeUp 1.4s ease 0.3s both;
+  }
+
+  .subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: #9a6b7a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: fadeUp 1.4s ease 0.5s both;
+  }
+
+  /* Message */
+  .message {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: #d4b0b8;
+    font-style: italic;
+    max-width: 380px;
+    margin: 0 auto;
+    animation: fadeUp 1.4s ease 0.7s both;
+  }
+
+  /* Bottom sparkles */
+  .sparkles {
+    margin-top: 40px;
+    font-size: 1.1rem;
+    color: #7a3a4a;
+    letter-spacing: 8px;
+    animation: fadeUp 1.4s ease 0.9s both;
+  }
+
+  /* Tablet */
+  @media (max-width: 600px) {
+    .card {
+      padding: 50px 28px;
+      width: 95%;
+    }
+
+    .title {
+      font-size: 2.1rem;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+    }
+
+    .message {
+      font-size: 0.98rem;
+      line-height: 1.8;
+    }
+  }
+
+  /* Phone */
+  @media (max-width: 380px) {
+    .card {
+      padding: 40px 20px;
+    }
+
+    .heart {
+      width: 54px;
+      height: 54px;
+      margin-bottom: 22px;
+    }
+
+    .title {
+      font-size: 1.75rem;
+    }
+
+    .subtitle {
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      margin-bottom: 24px;
+    }
+
+    .message {
+      font-size: 0.9rem;
+      line-height: 1.75;
+    }
+
+    .sparkles {
+      margin-top: 30px;
+      letter-spacing: 6px;
+    }
+
+    body::before {
+      width: 320px;
+      height: 320px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Falling petals -->
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+
+<!-- Card -->
+<div class="card">
+
+  <!-- Beating heart -->
+  <div class="heart">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+  </div>
+
+  <div class="divider"></div>
+
+  <h1 class="title">Happy Valentine's Day</h1>
+  <p class="subtitle">With all my love</p>
+
+  <p class="message">
+    Every moment with you is a gift I treasure.<br><br>
+    You are my sunshine on the darkest days,
+    my calm in every storm, and the reason
+    I smile without even trying.
+  </p>
+
+  <div class="sparkles">✦ ✦ ✦</div>
+</div>
+
+</body>
+</html>
