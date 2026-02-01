@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Happy Valentine's Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Lora:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #1a0a0e;
+    --glow: rgba(180,50,70,0.25);
+    --accent: #c94060;
+    --accent-dim: #7a1e30;
+    --text: #f5e6e8;
+    --text-soft: #d4b0b8;
+    --text-muted: #9a6b7a;
+    --text-title: #f0d0d5;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', serif;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Ambient glow */
+  body::before {
+    content:'';
+    position:fixed; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:600px; height:600px;
+    background:radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 18px 12px;
+    background: linear-gradient(180deg, rgba(26,10,14,0.85) 0%, transparent 100%);
+  }
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.82rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+  nav a:hover, nav a.active { color: var(--accent); }
+  nav a.active::after {
+    content:'';
+    position:absolute; bottom:-4px; left:0; right:0;
+    height:1px; background:var(--accent);
+  }
+
+  /* ── PETALS ── */
+  .petal {
+    position:fixed; border-radius:50% 0 50% 50%; opacity:0;
+    background:radial-gradient(circle, var(--accent), var(--accent-dim));
+    animation:fall linear infinite; z-index:0; pointer-events:none;
+  }
+  .petal:nth-child(1){left:10%;animation-duration:8s;animation-delay:0s;width:10px;height:10px}
+  .petal:nth-child(2){left:20%;animation-duration:11s;animation-delay:2s;width:8px;height:8px}
+  .petal:nth-child(3){left:35%;animation-duration:9s;animation-delay:4s;width:14px;height:14px}
+  .petal:nth-child(4){left:50%;animation-duration:12s;animation-delay:1s;width:7px;height:7px}
+  .petal:nth-child(5){left:65%;animation-duration:10s;animation-delay:3s;width:11px;height:11px}
+  .petal:nth-child(6){left:78%;animation-duration:8s;animation-delay:5s;width:9px;height:9px}
+  .petal:nth-child(7){left:88%;animation-duration:13s;animation-delay:0.5s;width:13px;height:13px}
+  .petal:nth-child(8){left:5%;animation-duration:10s;animation-delay:6s;width:6px;height:6px}
+  @keyframes fall {
+    0%   { top:-20px; opacity:0; transform:rotate(0deg) translateX(0); }
+    10%  { opacity:0.7; }
+    90%  { opacity:0.4; }
+    100% { top:105vh; opacity:0; transform:rotate(360deg) translateX(40px); }
+  }
+
+  /* ── MAIN CARD ── */
+  .card {
+    position:relative; z-index:1;
+    text-align:center;
+    padding: 120px 40px 60px;
+    max-width:540px; width:90%;
+    display:flex; flex-direction:column; align-items:center;
+    min-height:100vh; justify-content:center;
+  }
+
+  /* Heart */
+  .heart { width:70px; height:70px; margin:0 auto 28px; animation:heartbeat 1.4s ease infinite; }
+  .heart svg { width:100%; height:100%; fill:var(--accent); filter:drop-shadow(0 0 12px rgba(201,64,96,0.5)); }
+  @keyframes heartbeat {
+    0%,100%{transform:scale(1)} 15%{transform:scale(1.15)} 30%{transform:scale(1)} 45%{transform:scale(1.08)} 60%{transform:scale(1)}
+  }
+
+  .divider { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--accent),transparent); margin:0 auto 26px; }
+
+  .title {
+    font-family:'Playfair Display',serif;
+    font-size:2.6rem; font-weight:400; font-style:italic;
+    color:var(--text-title); letter-spacing:1px; margin-bottom:8px;
+    animation:fadeUp 1.2s ease both;
+  }
+  .subtitle {
+    font-family:'Playfair Display',serif;
+    font-size:0.82rem; color:var(--text-muted);
+    letter-spacing:3px; text-transform:uppercase;
+    margin-bottom:36px;
+    animation:fadeUp 1.2s ease 0.2s both;
+  }
+  @keyframes fadeUp {
+    from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)}
+  }
+
+  /* ── QUOTE CAROUSEL ── */
+  .carousel-wrap {
+    width:100%; max-width:420px;
+    position:relative;
+    animation:fadeUp 1.2s ease 0.4s both;
+  }
+  .carousel {
+    overflow:hidden;
+    border-radius:12px;
+    background: rgba(201,64,96,0.06);
+    border: 1px solid rgba(201,64,96,0.15);
+    padding: 36px 28px 30px;
+    position:relative;
+  }
+  .quote-slide {
+    display:none;
+    text-align:center;
+    animation: crossFade 0.7s ease;
+  }
+  .quote-slide.active { display:block; }
+  @keyframes crossFade {
+    from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)}
+  }
+  .quote-number {
+    font-family:'Playfair Display',serif;
+    font-size:0.7rem; color:var(--accent);
+    letter-spacing:3px; text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .quote-mark {
+    font-family:'Playfair Display',serif;
+    font-size:2.4rem; color:var(--accent); opacity:0.4;
+    line-height:1; margin-bottom:8px; display:block;
+  }
+  .quote-text {
+    font-style:italic; font-size:1.02rem;
+    line-height:1.85; color:var(--text-soft);
+  }
+  .quote-author {
+    margin-top:14px; font-family:'Playfair Display',serif;
+    font-size:0.72rem; color:var(--accent);
+    letter-spacing:1.8px; font-style:normal;
+  }
+  .quote-author::before { content:'— '; }
+
+  /* Carousel controls */
+  .carousel-controls {
+    display:flex; align-items:center; justify-content:center;
+    gap:18px; margin-top:22px;
+  }
+  .carousel-btn {
+    background:none; border:1px solid rgba(201,64,96,0.3);
+    color:var(--accent); width:34px; height:34px; border-radius:50%;
+    cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .carousel-btn:hover { background:rgba(201,64,96,0.15); border-color:var(--accent); }
+  .carousel-dots { display:flex; gap:7px; }
+  .dot {
+    width:7px; height:7px; border-radius:50%;
+    background:var(--accent-dim); transition:background 0.3s, transform 0.3s;
+    cursor:pointer;
+  }
+  .dot.active { background:var(--accent); transform:scale(1.3); }
+
+  .sparkles { margin-top:36px; font-size:1rem; color:var(--accent-dim); letter-spacing:8px; }
+
+  /* ── MOBILE ── */
+  @media(max-width:600px){
+    .card { padding:100px 24px 50px; width:95%; }
+    .title { font-size:2rem; }
+    .subtitle { font-size:0.75rem; letter-spacing:2px; }
+    .carousel { padding:28px 20px 24px; }
+    .quote-text { font-size:0.93rem; }
+    nav { gap:16px; padding:14px 8px; }
+    nav a { font-size:0.72rem; letter-spacing:1.8px; }
+  }
+  @media(max-width:380px){
+    .title { font-size:1.7rem; }
+    .heart { width:52px; height:52px; }
+    .carousel { padding:22px 16px 20px; }
+    .quote-text { font-size:0.88rem; line-height:1.75; }
+    nav a { font-size:0.65rem; letter-spacing:1.4px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="active">Home</a>
+  <a href="story.html">Story</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="game.html">Game</a>
+</nav>
+
+<!-- Petals -->
+<div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+<div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+
+<div class="card">
+  <div class="heart">
+    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+  <div class="divider"></div>
+  <h1 class="title">Happy Valentine's Day</h1>
+  <p class="subtitle">With all my love</p>
+
+  <!-- Quotes carousel -->
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+      <!-- ADD YOUR 10 QUOTES HERE — just change the text inside each .quote-text -->
+      <div class="quote-slide active" data-index="0">
+        <div class="quote-number">Quote 1 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">I finally found someone I want to protect</p>
+        <p class="quote-author">Howl Pendragon</p>
+      </div>
+      <div class="quote-slide" data-index="1">
+        <div class="quote-number">Quote 2 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">You are my sunshine on the darkest days, my calm in every storm.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="2">
+        <div class="quote-number">Quote 3 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">In a world full of people, you are the one I would choose again and again.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="3">
+        <div class="quote-number">Quote 4 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">Your laugh is the most beautiful sound this world has ever heard.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="4">
+        <div class="quote-number">Quote 5 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">I didn't know what home felt like until I found it in your arms.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="5">
+        <div class="quote-number">Quote 6 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">You make every ordinary day feel like the greatest adventure of my life.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="6">
+        <div class="quote-number">Quote 7 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">If I could hold one thing forever, it would be this feeling I have for you.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="7">
+        <div class="quote-number">Quote 8 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">You are the reason I believe that love is the most powerful force on earth.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="8">
+        <div class="quote-number">Quote 9 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">Every star in the sky pales in comparison to the way you shine.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+      <div class="quote-slide" data-index="9">
+        <div class="quote-number">Quote 10 of 10</div>
+        <span class="quote-mark">"</span>
+        <p class="quote-text">I smile without even trying, because you are the reason for everything good in my life.</p>
+        <p class="quote-author">Author Name</p>
+      </div>
+    </div>
+
+    <div class="carousel-controls">
+      <button class="carousel-btn" onclick="changeQuote(-1)">&#8592;</button>
+      <div class="carousel-dots" id="dots"></div>
+      <button class="carousel-btn" onclick="changeQuote(1)">&#8594;</button>
+    </div>
+  </div>
+
+  <div class="sparkles">✦ ✦ ✦</div>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.quote-slide');
+  const total = slides.length;
+  const dotsContainer = document.getElementById('dots');
+  let autoTimer;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    document.querySelectorAll('.dot')[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.dot')[current].classList.add('active');
+    resetAuto();
+  }
+
+  function changeQuote(dir) { goTo(current + dir); }
+
+  function resetAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => goTo(current + 1), 5000);
+  }
+  resetAuto();
+</script>
+</body>
+</html>

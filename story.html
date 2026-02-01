@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Our Story</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Lora:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#1a0a0e; --glow:rgba(180,50,70,0.25); --accent:#c94060;
+    --accent-dim:#7a1e30; --text:#f5e6e8; --text-soft:#d4b0b8;
+    --text-muted:#9a6b7a; --text-title:#f0d0d5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body {
+    background:var(--bg); color:var(--text);
+    font-family:'Lora',serif; min-height:100vh;
+    overflow-x:hidden; position:relative;
+  }
+  body::before {
+    content:''; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:700px; height:700px;
+    background:radial-gradient(circle,var(--glow) 0%,transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* Nav */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:center; gap:24px; padding:18px 12px;
+    background:linear-gradient(180deg,rgba(26,10,14,0.9) 0%,transparent 100%);
+  }
+  nav a {
+    color:var(--text-muted); text-decoration:none;
+    font-family:'Playfair Display',serif; font-size:0.82rem;
+    letter-spacing:2.5px; text-transform:uppercase; transition:color 0.3s; position:relative; z-index:1;
+  }
+  nav a:hover, nav a.active{color:var(--accent);}
+  nav a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--accent);}
+
+  /* Petals */
+  .petal{position:fixed;border-radius:50% 0 50% 50%;opacity:0;background:radial-gradient(circle,var(--accent),var(--accent-dim));animation:fall linear infinite;z-index:0;pointer-events:none;}
+  .petal:nth-child(1){left:5%;animation-duration:9s;animation-delay:0s;width:9px;height:9px}
+  .petal:nth-child(2){left:20%;animation-duration:12s;animation-delay:3s;width:7px;height:7px}
+  .petal:nth-child(3){left:45%;animation-duration:10s;animation-delay:5s;width:11px;height:11px}
+  .petal:nth-child(4){left:70%;animation-duration:11s;animation-delay:1.5s;width:8px;height:8px}
+  .petal:nth-child(5){left:88%;animation-duration:9s;animation-delay:4s;width:10px;height:10px}
+  @keyframes fall{0%{top:-20px;opacity:0;transform:rotate(0deg) translateX(0)}10%{opacity:0.7}90%{opacity:0.4}100%{top:105vh;opacity:0;transform:rotate(360deg) translateX(40px)}}
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    position:relative; z-index:1;
+    text-align:center; padding:130px 24px 60px;
+  }
+  .divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:0 auto 24px;}
+  .page-title {
+    font-family:'Playfair Display',serif; font-size:2.6rem; font-weight:400; font-style:italic;
+    color:var(--text-title); margin-bottom:8px;
+  }
+  .page-subtitle {
+    font-family:'Playfair Display',serif; font-size:0.78rem; color:var(--text-muted);
+    letter-spacing:3px; text-transform:uppercase;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    position:relative; z-index:1;
+    max-width:640px; margin:0 auto;
+    padding:0 24px 100px;
+  }
+
+  /* Vertical line */
+  .timeline::before {
+    content:''; position:absolute;
+    left:50%; transform:translateX(-50%);
+    top:0; bottom:0; width:1px;
+    background:linear-gradient(180deg, var(--accent) 0%, var(--accent-dim) 60%, transparent 100%);
+  }
+
+  /* Chapter entry */
+  .chapter {
+    position:relative; width:50%; padding-bottom:50px;
+    opacity:0; transform:translateY(30px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .chapter.visible { opacity:1; transform:translateY(0); }
+
+  /* Alternate left / right */
+  .chapter:nth-child(odd)  { left:0; padding-right:40px; text-align:right; }
+  .chapter:nth-child(even) { left:50%; padding-left:40px; text-align:left; }
+
+  /* Dot on the line */
+  .chapter .dot {
+    position:absolute; top:6px;
+    width:14px; height:14px; border-radius:50%;
+    background:var(--accent); border:3px solid var(--bg);
+    box-shadow:0 0 10px rgba(201,64,96,0.45);
+  }
+  .chapter:nth-child(odd)  .dot { right:-7px; }
+  .chapter:nth-child(even) .dot { left:-7px; }
+
+  /* Card content */
+  .chapter-card {
+    background:rgba(201,64,96,0.05);
+    border:1px solid rgba(201,64,96,0.15);
+    border-radius:14px; padding:26px 24px;
+    transition:border-color 0.3s, box-shadow 0.3s;
+  }
+  .chapter-card:hover {
+    border-color:rgba(201,64,96,0.3);
+    box-shadow:0 4px 24px rgba(0,0,0,0.25);
+  }
+
+  .chapter-number {
+    font-family:'Playfair Display',serif; font-size:0.68rem;
+    color:var(--accent); letter-spacing:2.5px; text-transform:uppercase;
+    margin-bottom:8px; display:block;
+  }
+  .chapter-title {
+    font-family:'Playfair Display',serif; font-style:italic;
+    font-size:1.25rem; color:var(--text-title); margin-bottom:10px;
+    font-weight:400;
+  }
+  .chapter-text {
+    font-size:0.88rem; line-height:1.85; color:var(--text-soft); font-style:italic;
+  }
+
+  /* End heart */
+  .timeline-end {
+    text-align:center; padding-top:10px; position:relative; z-index:1;
+  }
+  .timeline-end .end-heart { width:36px; height:36px; margin:0 auto; opacity:0.5; }
+  .timeline-end .end-heart svg { width:100%; height:100%; fill:var(--accent); }
+
+  /* ── MOBILE ── */
+  /* On mobile, collapse to single column (no left/right alternation) */
+  @media(max-width:600px){
+    nav{gap:16px;padding:14px 8px;}
+    nav a{font-size:0.72rem;letter-spacing:1.8px;}
+    .page-header{padding:110px 20px 40px;}
+    .page-title{font-size:2rem;}
+
+    .timeline{padding:0 20px 80px;}
+    /* Move line to the left */
+    .timeline::before { left:18px; transform:none; }
+
+    /* All chapters become left-aligned single column */
+    .chapter { width:100%; left:0 !important; padding-right:0 !important; padding-left:44px !important; text-align:left !important; }
+    .chapter .dot { left:11px !important; right:auto !important; }
+
+    .chapter-title{font-size:1.1rem;}
+    .chapter-text{font-size:0.82rem;}
+    .chapter-card{padding:20px 18px;}
+  }
+  @media(max-width:380px){
+    .page-title{font-size:1.6rem;}
+    .timeline::before{left:14px;}
+    .chapter{padding-left:36px !important;}
+    .chapter .dot{left:7px !important; width:12px; height:12px;}
+    .chapter-card{padding:16px 14px;}
+    .chapter-text{font-size:0.78rem;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="story.html" class="active">Story</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="game.html">Game</a>
+</nav>
+
+<div class="petal"></div><div class="petal"></div><div class="petal"></div>
+<div class="petal"></div><div class="petal"></div>
+
+<!-- Header -->
+<div class="page-header">
+  <div class="divider"></div>
+  <h1 class="page-title">Our Story</h1>
+  <p class="page-subtitle">How it all began</p>
+</div>
+
+<!-- Timeline -->
+<!-- EDIT EACH CHAPTER: change the title and text to your own words -->
+<div class="timeline">
+
+  <div class="chapter">
+    <div class="dot"></div>
+    <div class="chapter-card">
+      <span class="chapter-number">Chapter One</span>
+      <h2 class="chapter-title">The Beginning - 27/10/2024</h2>
+      <p class="chapter-text">
+        Stepping out of church that day, a complete stranger approached me to ask my age and if I was familiar with MJO. She
+        invited me along to their 'Sobhiye,' and for some reason, I agreed. I had no idea then that this spontaneous decision
+        would mark the beginning of such a significant chapter in my life.
+      </p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="dot"></div>
+    <div class="chapter-card">
+      <span class="chapter-number">Chapter Two</span>
+      <h2 class="chapter-title">The First Conversations</h2>
+      <p class="chapter-text">
+        Our interactions evolved from brief, polite exchanges to deep, meaningful discussions. Those frequent ‘muted’ video
+        calls during study sessions, along with our first awkward attempts at hugging (including the famous '$5' hugs) and the
+        nervous excitement of holding hands, gave me the sense that a connection was growing, even if I wasn't entirely sure what
+        it meant at the time.
+      </p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="dot"></div>
+    <div class="chapter-card">
+      <span class="chapter-number">Chapter Three</span>
+      <h2 class="chapter-title">Our Special Day - 25/02/2025</h2>
+      <p class="chapter-text">
+        Those late-night talks and deep conversations allowed us to truly know one another, leading up to the most beautiful
+        moment. On February 25, 2025, after the 'what are we?' question finally came up, I decided to make it official. It
+        happened on 'stupid WhatsApp', I asked you to be my girlfriend via text while we were on a muted call. Even though we
+        were silent, our reactions were louder than any words could ever be.
+      </p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="dot"></div>
+    <div class="chapter-card">
+      <span class="chapter-number">Chapter Four</span>
+      <h2 class="chapter-title">Our Favorite Memory</h2>
+      <p class="chapter-text">
+        Share a moment that meant the most to you — a place, a conversation, a laugh you can't forget. Paint the picture so she can relive it.
+      </p>
+    </div>
+  </div>
+
+  <div class="chapter">
+    <div class="dot"></div>
+    <div class="chapter-card">
+      <span class="chapter-number">Chapter Five</span>
+      <h2 class="chapter-title">What You Mean to Me</h2>
+      <p class="chapter-text">
+        This is where you tell her everything. How she changed your life, what she makes you feel, and why you wrote all of this for her. Make it from the heart.
+      </p>
+    </div>
+  </div>
+
+  <!-- You can add more chapters by copying the block above -->
+
+  <div class="timeline-end">
+    <div class="end-heart">
+      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll-triggered reveal for chapters
+  const chapters = document.querySelectorAll('.chapter');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  chapters.forEach(ch => observer.observe(ch));
+</script>
+</body>
+</html>

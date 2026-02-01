@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Love Match</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Lora:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#1a0a0e; --glow:rgba(180,50,70,0.25); --accent:#c94060;
+    --accent-dim:#7a1e30; --text:#f5e6e8; --text-soft:#d4b0b8; --text-muted:#9a6b7a; --text-title:#f0d0d5;
+    --card-bg:#231017; --card-border:rgba(201,64,96,0.22); --card-flip:#2e1520;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  body {
+    min-height:100vh; display:flex; flex-direction:column; align-items:center;
+    background:var(--bg); color:var(--text); font-family:'Lora',serif;
+    overflow-x:hidden; position:relative;
+  }
+  body::before {
+    content:''; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:600px; height:600px;
+    background:radial-gradient(circle,var(--glow) 0%,transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* Nav */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:center; gap:24px; padding:18px 12px;
+    background:linear-gradient(180deg,rgba(26,10,14,0.85) 0%,transparent 100%);
+  }
+  nav a {
+    color:var(--text-muted); text-decoration:none;
+    font-family:'Playfair Display',serif; font-size:0.82rem;
+    letter-spacing:2.5px; text-transform:uppercase; transition:color 0.3s; position:relative; z-index:1;
+  }
+  nav a:hover, nav a.active{color:var(--accent);}
+  nav a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--accent);}
+
+  /* Petals */
+  .petal{position:fixed;border-radius:50% 0 50% 50%;opacity:0;background:radial-gradient(circle,var(--accent),var(--accent-dim));animation:fall linear infinite;z-index:0;pointer-events:none;}
+  .petal:nth-child(1){left:8%;animation-duration:9s;animation-delay:0s;width:9px;height:9px}
+  .petal:nth-child(2){left:22%;animation-duration:12s;animation-delay:2.5s;width:7px;height:7px}
+  .petal:nth-child(3){left:50%;animation-duration:10s;animation-delay:4s;width:12px;height:12px}
+  .petal:nth-child(4){left:72%;animation-duration:11s;animation-delay:1s;width:8px;height:8px}
+  .petal:nth-child(5){left:90%;animation-duration:9s;animation-delay:5s;width:10px;height:10px}
+  @keyframes fall{0%{top:-20px;opacity:0;transform:rotate(0deg) translateX(0)}10%{opacity:0.7}90%{opacity:0.4}100%{top:105vh;opacity:0;transform:rotate(360deg) translateX(40px)}}
+
+  /* Page */
+  .page {
+    position:relative; z-index:1; width:100%; max-width:560px;
+    padding:110px 20px 60px; display:flex; flex-direction:column; align-items:center;
+  }
+  .divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:0 auto 24px;}
+  .page-title {
+    font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:400; font-style:italic;
+    color:var(--text-title); margin-bottom:6px; text-align:center;
+    animation:fadeUp 1s ease both;
+  }
+  .page-subtitle {
+    font-family:'Playfair Display',serif; font-size:0.78rem; color:var(--text-muted);
+    letter-spacing:3px; text-transform:uppercase; margin-bottom:24px; text-align:center;
+    animation:fadeUp 1s ease 0.15s both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Stats bar */
+  .stats {
+    display:flex; justify-content:center; gap:32px; margin-bottom:22px;
+    animation:fadeUp 1s ease 0.25s both;
+  }
+  .stat { text-align:center; }
+  .stat-val {
+    font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--accent); font-weight:600;
+  }
+  .stat-label { font-size:0.7rem; color:var(--text-muted); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; }
+
+  /* ── GAME BOARD ── */
+  .board {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:10px; width:100%;
+    animation:fadeUp 1s ease 0.35s both;
+  }
+
+  /* 3D card flip */
+  .card-wrap {
+    aspect-ratio:1; perspective:600px; cursor:pointer;
+  }
+  .card-inner {
+    width:100%; height:100%; position:relative;
+    transform-style:preserve-3d;
+    transition:transform 0.5s ease;
+  }
+  .card-wrap.flipped .card-inner { transform:rotateY(180deg); }
+
+  .card-face {
+    position:absolute; inset:0; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    backface-visibility:hidden;
+  }
+  /* Back (hidden side) */
+  .card-back {
+    background:var(--card-bg);
+    border:1px solid var(--card-border);
+    transition:border-color 0.3s, box-shadow 0.3s;
+  }
+  .card-wrap:hover .card-back {
+    border-color:var(--accent); box-shadow:0 0 14px rgba(201,64,96,0.2);
+  }
+  .card-back .back-icon { opacity:0.18; }
+  .card-back .back-icon svg { width:28px; height:28px; fill:var(--accent); }
+
+  /* Front (revealed side) */
+  .card-front {
+    background:var(--card-flip);
+    border:1px solid var(--accent);
+    box-shadow:0 0 18px rgba(201,64,96,0.25);
+    transform:rotateY(180deg);
+    font-size:2rem;
+  }
+  /* Matched glow */
+  .card-wrap.matched .card-front {
+    border-color:#e87a9a;
+    box-shadow:0 0 22px rgba(232,122,154,0.35);
+    background:#2e1824;
+  }
+
+  /* Play again button */
+  .replay-wrap {
+    margin-top:28px; text-align:center;
+    animation:fadeUp 1s ease 0.45s both;
+  }
+  .replay-btn {
+    background:transparent; border:1px solid var(--accent);
+    color:var(--accent); font-family:'Playfair Display',serif;
+    font-size:0.82rem; letter-spacing:2px; text-transform:uppercase;
+    padding:10px 28px; border-radius:30px; cursor:pointer;
+    transition:background 0.3s, color 0.3s;
+  }
+  .replay-btn:hover { background:var(--accent); color:#fff; }
+
+  /* Win banner */
+  .win-banner {
+    display:none; text-align:center; margin-top:24px;
+    padding:22px 28px; border-radius:12px;
+    background:rgba(201,64,96,0.1); border:1px solid rgba(201,64,96,0.25);
+    animation:fadeUp 0.5s ease;
+  }
+  .win-banner.show { display:block; }
+  .win-banner h2 {
+    font-family:'Playfair Display',serif; font-style:italic; font-weight:400;
+    font-size:1.5rem; color:var(--text-title); margin-bottom:6px;
+  }
+  .win-banner p { font-size:0.82rem; color:var(--text-muted); }
+
+  /* Mobile */
+  @media(max-width:600px){
+    .page{padding:100px 14px 50px;}
+    .page-title{font-size:1.75rem;}
+    .board{gap:8px;}
+    .card-front{font-size:1.6rem;}
+    .card-back .back-icon svg{width:22px;height:22px;}
+    nav{gap:16px;padding:14px 8px;}
+    nav a{font-size:0.72rem;letter-spacing:1.8px;}
+    .stats{gap:22px;}
+    .stat-val{font-size:1.3rem;}
+  }
+  @media(max-width:380px){
+    .page-title{font-size:1.45rem;}
+    .board{gap:6px;}
+    .card-front{font-size:1.3rem;}
+    nav a{font-size:0.65rem;letter-spacing:1.2px;}
+    .stats{gap:16px;}
+    .stat-val{font-size:1.1rem;}
+    .stat-label{font-size:0.62rem;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="story.html">Story</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="game.html" class="active">Game</a>
+</nav>
+
+<div class="petal"></div><div class="petal"></div><div class="petal"></div>
+<div class="petal"></div><div class="petal"></div>
+
+<div class="page">
+  <div class="divider"></div>
+  <h1 class="page-title">Love Match</h1>
+  <p class="page-subtitle">Find all the pairs</p>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="moves">0</div><div class="stat-label">Moves</div></div>
+    <div class="stat"><div class="stat-val" id="pairs">0 / 8</div><div class="stat-label">Pairs</div></div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="replay-wrap">
+    <button class="replay-btn" onclick="initGame()">Play Again</button>
+  </div>
+
+  <div class="win-banner" id="winBanner">
+    <h2>You did it! 💕</h2>
+    <p id="winMsg">All pairs found!</p>
+  </div>
+</div>
+
+<script>
+  // 8 emoji pairs for the game
+  const icons = ['💕','🌹','💝','🦋','🌸','💌','✨','🍫'];
+  let deck, flipped, matched, moves, locked;
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  function initGame() {
+    // Reset state
+    moves = 0; flipped = []; matched = []; locked = false;
+    document.getElementById('moves').textContent = '0';
+    document.getElementById('pairs').textContent = '0 / 8';
+    document.getElementById('winBanner').classList.remove('show');
+
+    // Create shuffled deck (each icon x2)
+    deck = shuffle([...icons, ...icons]);
+
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+
+    deck.forEach((icon, i) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'card-wrap';
+      wrap.dataset.index = i;
+      wrap.dataset.icon = icon;
+      wrap.onclick = () => flipCard(wrap);
+      wrap.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-back"><div class="back-icon"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></div></div>
+          <div class="card-face card-front">${icon}</div>
+        </div>`;
+      board.appendChild(wrap);
+    });
+  }
+
+  function flipCard(card) {
+    if (locked) return;
+    if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+    if (flipped.length === 2) return;
+
+    card.classList.add('flipped');
+    flipped.push(card);
+
+    if (flipped.length === 2) {
+      moves++;
+      document.getElementById('moves').textContent = moves;
+      locked = true;
+
+      if (flipped[0].dataset.icon === flipped[1].dataset.icon) {
+        // Match!
+        flipped[0].classList.add('matched');
+        flipped[1].classList.add('matched');
+        matched.push(flipped[0], flipped[1]);
+        flipped = [];
+        locked = false;
+
+        const pairsFound = matched.length / 2;
+        document.getElementById('pairs').textContent = pairsFound + ' / 8';
+
+        if (pairsFound === 8) {
+          setTimeout(() => {
+            document.getElementById('winBanner').classList.add('show');
+            document.getElementById('winMsg').textContent =
+              'All pairs found in ' + moves + ' move' + (moves!==1?'s':'') + '! 💕';
+          }, 400);
+        }
+      } else {
+        // No match — flip back after a short delay
+        setTimeout(() => {
+          flipped[0].classList.remove('flipped');
+          flipped[1].classList.remove('flipped');
+          flipped = [];
+          locked = false;
+        }, 900);
+      }
+    }
+  }
+
+  // Start on load
+  initGame();
+</script>
+</body>
+</html>

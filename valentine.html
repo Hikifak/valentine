@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>A Question for You</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Lora:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#1a0a0e; --glow:rgba(180,50,70,0.25); --accent:#c94060;
+    --accent-dim:#7a1e30; --text:#f5e6e8; --text-soft:#d4b0b8;
+    --text-muted:#9a6b7a; --text-title:#f0d0d5;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html, body { width:100%; height:100%; overflow:hidden; }
+
+  body {
+    height:100%; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    background:var(--bg); color:var(--text);
+    font-family:'Lora',serif; position:relative;
+    user-select:none; -webkit-user-select:none;
+  }
+  body::before {
+    content:''; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:600px; height:600px;
+    background:radial-gradient(circle,var(--glow) 0%,transparent 70%);
+    pointer-events:none; z-index:0;
+  }
+
+  /* Petals */
+  .petal{position:fixed;border-radius:50% 0 50% 50%;opacity:0;background:radial-gradient(circle,var(--accent),var(--accent-dim));animation:fall linear infinite;z-index:0;pointer-events:none;}
+  .petal:nth-child(1){left:6%;animation-duration:8s;animation-delay:0s;width:10px;height:10px}
+  .petal:nth-child(2){left:18%;animation-duration:11s;animation-delay:2s;width:8px;height:8px}
+  .petal:nth-child(3){left:33%;animation-duration:9s;animation-delay:4s;width:13px;height:13px}
+  .petal:nth-child(4){left:52%;animation-duration:12s;animation-delay:1s;width:7px;height:7px}
+  .petal:nth-child(5){left:68%;animation-duration:10s;animation-delay:3s;width:11px;height:11px}
+  .petal:nth-child(6){left:82%;animation-duration:8s;animation-delay:5s;width:9px;height:9px}
+  .petal:nth-child(7){left:93%;animation-duration:13s;animation-delay:0.8s;width:12px;height:12px}
+  .petal:nth-child(8){left:44%;animation-duration:10s;animation-delay:6s;width:6px;height:6px}
+  @keyframes fall{0%{top:-20px;opacity:0;transform:rotate(0deg) translateX(0)}10%{opacity:0.7}90%{opacity:0.4}100%{top:105vh;opacity:0;transform:rotate(360deg) translateX(40px)}}
+
+  /* ── INVITATION CARD ── */
+  .card {
+    position:relative; z-index:1;
+    text-align:center; padding:50px 36px 40px;
+    max-width:480px; width:90%;
+    animation:fadeUp 1.2s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+  .heart{width:64px;height:64px;margin:0 auto 24px;animation:heartbeat 1.4s ease infinite;}
+  .heart svg{width:100%;height:100%;fill:var(--accent);filter:drop-shadow(0 0 14px rgba(201,64,96,0.55));}
+  @keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.1)}60%{transform:scale(1)}}
+
+  .divider{width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:0 auto 28px;}
+
+  .question {
+    font-family:'Playfair Display',serif; font-style:italic;
+    font-size:2.4rem; font-weight:400; color:var(--text-title);
+    line-height:1.3; margin-bottom:12px;
+    animation:fadeUp 1.2s ease 0.2s both;
+  }
+  .sub-text {
+    font-size:0.88rem; color:var(--text-muted); font-style:italic;
+    margin-bottom:38px; line-height:1.6;
+    animation:fadeUp 1.2s ease 0.35s both;
+  }
+
+  /* ── BUTTONS AREA ── */
+  .buttons-area {
+    position:relative; width:100%; height:80px;
+    animation:fadeUp 1.2s ease 0.5s both;
+  }
+
+  /* Yes button — centered, static */
+  .yes-btn {
+    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+    background:var(--accent); color:#fff;
+    font-family:'Playfair Display',serif; font-size:1.15rem;
+    letter-spacing:1.5px; padding:14px 44px; border:none;
+    border-radius:40px; cursor:pointer;
+    box-shadow:0 4px 24px rgba(201,64,96,0.4);
+    transition:background 0.3s, transform 0.2s, box-shadow 0.3s;
+    z-index:2;
+  }
+  .yes-btn:hover { background:#d94a6e; transform:translate(-50%,-50%) scale(1.06); box-shadow:0 6px 30px rgba(201,64,96,0.55); }
+  .yes-btn:active { transform:translate(-50%,-50%) scale(0.97); }
+
+  /* No button — runs away */
+  .no-btn {
+    position:absolute;
+    background:transparent; color:var(--text-muted);
+    font-family:'Playfair Display',serif; font-size:0.82rem;
+    letter-spacing:1px; padding:8px 20px; border:1px solid rgba(201,64,96,0.25);
+    border-radius:30px; cursor:pointer;
+    transition:font-size 0.2s, opacity 0.2s, border-color 0.2s;
+    z-index:1; white-space:nowrap;
+  }
+  .no-btn:hover { border-color:rgba(201,64,96,0.4); color:var(--text-soft); }
+
+  /* ── WIN OVERLAY ── */
+  .win-overlay {
+    display:none; position:fixed; inset:0; z-index:200;
+    background:rgba(26,10,14,0.92);
+    flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:40px;
+  }
+  .win-overlay.show { display:flex; }
+  .win-overlay .win-heart { width:90px; height:90px; margin-bottom:28px; animation:popIn 0.5s cubic-bezier(.175,.885,.32,1.275) both; }
+  .win-overlay .win-heart svg { width:100%; height:100%; fill:var(--accent); filter:drop-shadow(0 0 20px rgba(201,64,96,0.6)); }
+  @keyframes popIn{from{opacity:0;transform:scale(0.3)}to{opacity:1;transform:scale(1)}}
+  .win-overlay h1 {
+    font-family:'Playfair Display',serif; font-style:italic; font-weight:400;
+    font-size:2.5rem; color:var(--text-title); margin-bottom:10px;
+    animation:fadeUp 0.6s ease 0.3s both;
+  }
+  .win-overlay p {
+    font-size:0.92rem; color:var(--text-soft); font-style:italic;
+    max-width:320px; line-height:1.7; margin-bottom:32px;
+    animation:fadeUp 0.6s ease 0.5s both;
+  }
+  .win-overlay .enter-btn {
+    background:var(--accent); color:#fff;
+    font-family:'Playfair Display',serif; font-size:0.85rem;
+    letter-spacing:2px; text-transform:uppercase;
+    padding:13px 36px; border:none; border-radius:40px; cursor:pointer;
+    box-shadow:0 4px 24px rgba(201,64,96,0.4);
+    transition:background 0.3s, transform 0.2s;
+    animation:fadeUp 0.6s ease 0.7s both;
+  }
+  .win-overlay .enter-btn:hover { background:#d94a6e; transform:scale(1.05); }
+
+  /* Confetti canvas */
+  #confetti { position:fixed; inset:0; pointer-events:none; z-index:199; }
+
+  /* Mobile */
+  @media(max-width:600px){
+    .card{padding:40px 24px 32px; width:95%;}
+    .question{font-size:1.9rem;}
+    .sub-text{font-size:0.82rem;}
+    .yes-btn{font-size:1rem; padding:12px 36px;}
+  }
+  @media(max-width:380px){
+    .question{font-size:1.6rem;}
+    .yes-btn{font-size:0.9rem; padding:11px 30px;}
+    .heart{width:50px;height:50px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Petals -->
+<div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+<div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+
+<canvas id="confetti"></canvas>
+
+<!-- Invitation card -->
+<div class="card">
+  <div class="heart">
+    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+  <div class="divider"></div>
+  <h1 class="question">Will you be<br>my Valentine?</h1>
+  <p class="sub-text">I have something very special waiting for you...</p>
+
+  <div class="buttons-area" id="buttonsArea">
+    <button class="yes-btn" onclick="onYes()">Yes!</button>
+    <button class="no-btn" id="noBtn">No</button>
+  </div>
+</div>
+
+<!-- Win overlay -->
+<div class="win-overlay" id="winOverlay">
+  <div class="win-heart">
+    <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+  </div>
+  <h1>Of course!</h1>
+  <p>I knew you'd say yes. Come inside — I made something just for us.</p>
+  <button class="enter-btn" onclick="window.location='index.html'">Enter ♡</button>
+</div>
+
+<script>
+// ── NO BUTTON ESCAPE LOGIC ──
+const noBtn = document.getElementById('noBtn');
+const area = document.getElementById('buttonsArea');
+let escapeCount = 0;
+
+const noTexts = [
+  "No",
+  "Are you sure?",
+  "Really?",
+  "Think again…",
+  "Are you sure? 👀",
+  "No way!",
+  "Come on…",
+  "Please?",
+  "Don't do this to me…",
+  "Fine… 😢"
+];
+
+function getRandomPos() {
+  const areaRect = area.getBoundingClientRect();
+  const btnW = noBtn.offsetWidth;
+  const btnH = noBtn.offsetHeight;
+  // Margins so it doesn't fly completely off-screen
+  const marginX = 16, marginY = 8;
+  const maxX = Math.max(areaRect.width - btnW - marginX, marginX);
+  const maxY = Math.max(areaRect.height - btnH - marginY, marginY);
+  const x = marginX + Math.random() * (maxX - marginX);
+  const y = marginY + Math.random() * (maxY - marginY);
+  return { x, y };
+}
+
+function escapeNo() {
+  escapeCount++;
+
+  // Shrink a little each time (min size)
+  const scale = Math.max(0.45, 1 - escapeCount * 0.07);
+  noBtn.style.fontSize = (0.82 * scale) + 'rem';
+  noBtn.style.padding = (8 * scale) + 'px ' + (20 * scale) + 'px';
+  noBtn.style.opacity = Math.max(0.35, 1 - escapeCount * 0.08);
+
+  // Change text
+  const textIdx = Math.min(escapeCount, noTexts.length - 1);
+  noBtn.textContent = noTexts[textIdx];
+
+  // Random new position
+  const pos = getRandomPos();
+  noBtn.style.left = pos.x + 'px';
+  noBtn.style.top = pos.y + 'px';
+  noBtn.style.transform = 'none';
+}
+
+// Initial position: bottom-right area
+function initNoBtn() {
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = '68%';
+  noBtn.style.top = '50%';
+  noBtn.style.transform = 'translateY(-50%)';
+}
+initNoBtn();
+
+// On hover — run away (desktop)
+noBtn.addEventListener('mouseenter', escapeNo);
+// On click/touch — also run away
+noBtn.addEventListener('click', function(e) { e.preventDefault(); escapeNo(); });
+noBtn.addEventListener('touchstart', function(e) { e.preventDefault(); escapeNo(); }, { passive: false });
+
+// ── YES BUTTON ──
+function onYes() {
+  // Hide card
+  document.querySelector('.card').style.opacity = '0';
+  document.querySelector('.card').style.transition = 'opacity 0.4s ease';
+
+  // Launch confetti
+  startConfetti();
+
+  // Show win overlay after short delay
+  setTimeout(() => {
+    document.getElementById('winOverlay').classList.add('show');
+  }, 600);
+}
+
+// ── CONFETTI ──
+const canvas = document.getElementById('confetti');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let animId = null;
+
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+function randomColor() {
+  const colors = ['#c94060','#e87a9a','#f0d0d5','#7a1e30','#fff0f3','#d94a6e','#f5c6d0'];
+  return colors[Math.floor(Math.random()*colors.length)];
+}
+
+function createParticle() {
+  return {
+    x: canvas.width / 2,
+    y: canvas.height * 0.35,
+    vx: (Math.random() - 0.5) * 10,
+    vy: -Math.random() * 6 - 2,
+    size: Math.random() * 7 + 3,
+    color: randomColor(),
+    life: 1,
+    decay: Math.random() * 0.012 + 0.008,
+    spin: Math.random() * Math.PI * 2,
+    spinSpeed: (Math.random() - 0.5) * 0.3
+  };
+}
+
+function startConfetti() {
+  particles = [];
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => particles.push(createParticle()), i * 18);
+  }
+  if (!animId) animateConfetti();
+}
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.vy += 0.12; // gravity
+    p.y += p.vy;
+    p.life -= p.decay;
+    p.spin += p.spinSpeed;
+
+    if (p.life <= 0) { particles.splice(i, 1); return; }
+
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.spin);
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    // Draw a little rectangle (confetti shape)
+    ctx.fillRect(-p.size/2, -p.size*0.8, p.size, p.size * 1.6);
+    ctx.restore();
+  });
+  if (particles.length > 0) { animId = requestAnimationFrame(animateConfetti); }
+  else { animId = null; }
+}
+</script>
+</body>
+</html>
