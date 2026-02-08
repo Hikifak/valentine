@@ -351,6 +351,11 @@
       gap: 8px;
       margin: 0 auto;
       justify-content: center;
+      transition: gap 0.5s ease;
+    }
+
+    .puzzle-assembly.complete {
+      gap: 0px;
     }
 
     .puzzle-slot {
@@ -358,7 +363,7 @@
       border-radius: 8px;
       background: rgba(26, 10, 14, 0.4);
       position: relative;
-      transition: border-color 0.3s;
+      transition: border-color 0.3s, border-radius 0.5s;
     }
 
     .puzzle-slot.filled {
@@ -366,11 +371,43 @@
       background: transparent;
     }
 
+    .puzzle-slot.correct {
+      border-color: rgba(76, 175, 80, 0.8);
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+    }
+
+    .puzzle-assembly.complete .puzzle-slot {
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
     .puzzle-slot img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 6px;
+      transition: border-radius 0.5s;
+    }
+
+    .puzzle-assembly.complete .puzzle-slot img {
+      border-radius: 0;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
     }
 
     .pieces-pool {
@@ -405,6 +442,13 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .puzzle-controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
     }
 
     /* Modal */
@@ -487,6 +531,90 @@
         height: 100px;
       }
     }
+
+    /* Custom Alert Modal */
+    .custom-alert {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(26, 10, 14, 0.95);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s;
+    }
+
+    .custom-alert.show {
+      display: flex;
+    }
+
+    .custom-alert-content {
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(201, 64, 96, 0.3);
+      animation: slideUp 0.3s;
+    }
+
+    .custom-alert-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.8rem;
+      color: var(--text-title);
+      margin-bottom: 15px;
+    }
+
+    .custom-alert-message {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .custom-alert-btn {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 12px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .custom-alert-btn:hover {
+      background: var(--accent-dim);
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 
@@ -504,6 +632,15 @@
   <div class="petal"></div>
   <div class="petal"></div>
   <div class="petal"></div>
+
+  <!-- Custom Alert Modal -->
+  <div class="custom-alert" id="customAlert">
+    <div class="custom-alert-content">
+      <h2 class="custom-alert-title" id="alertTitle">Success!</h2>
+      <p class="custom-alert-message" id="alertMessage">You did it!</p>
+      <button class="custom-alert-btn" onclick="closeAlert()">Continue</button>
+    </div>
+  </div>
 
   <div class="page">
     <div class="divider"></div>
@@ -554,6 +691,9 @@
         <div class="puzzle-slot" data-slot="3"></div>
       </div>
       <div class="pieces-pool" id="piecesPool"></div>
+      <div class="puzzle-controls">
+        <button class="game-btn" onclick="redoPuzzle()">Redo Puzzle</button>
+      </div>
     </div>
   </div>
 
@@ -566,6 +706,17 @@
   </div>
 
   <script>
+    // ── CUSTOM ALERT SYSTEM ──
+    function showAlert(title, message) {
+      document.getElementById('alertTitle').textContent = title;
+      document.getElementById('alertMessage').textContent = message;
+      document.getElementById('customAlert').classList.add('show');
+    }
+
+    function closeAlert() {
+      document.getElementById('customAlert').classList.remove('show');
+    }
+
     // ── STATE ──
     let completed = JSON.parse(localStorage.getItem('gamesCompleted') || '{"zip":false,"sudoku":false,"queens":false,"tango":false}');
 
@@ -673,6 +824,7 @@
       // Total playable nodes = 27
       let path = [];
       let isDrawing = false;
+      let bonusIlluminated = false;
 
       renderGrid();
 
@@ -694,6 +846,11 @@
               if (isPath) classes += ' active';
               if (isPath && pathIdx === path.length - 1) classes += ' head';
 
+              // Special: illuminate 26 and 27 when bonus is triggered
+              if (bonusIlluminated && (val === 26 || val === 27)) {
+                classes += ' active';
+              }
+
               cell.className = classes;
               // Show Number if it's a waypoint or current head
               cell.textContent = val > 0 ? val : (isPath ? pathIdx + 1 : '');
@@ -712,6 +869,7 @@
         if (level[r][c] === 1) {
           path = [{ r, c }];
           isDrawing = true;
+          bonusIlluminated = false;
           renderGrid();
         } else if (path.length > 0) {
           const head = path[path.length - 1];
@@ -746,7 +904,9 @@
 
           if (path.length === 25 && level[r][c] === 25) {
             isDrawing = false;
-            setTimeout(() => { alert('Heart Completed! ❤'); markComplete('zip'); }, 200);
+            bonusIlluminated = true;
+            renderGrid();
+            setTimeout(() => { showAlert('Heart Completed! ❤', 'You successfully traced the heart shape!'); markComplete('zip'); }, 200);
           }
         }
       }
@@ -766,7 +926,7 @@
         }
       }
 
-      window.resetZip = function () { path = []; renderGrid(); }
+      window.resetZip = function () { path = []; bonusIlluminated = false; renderGrid(); }
       document.body.onmouseup = () => isDrawing = false;
       document.body.ontouchend = () => isDrawing = false;
     }
@@ -811,12 +971,12 @@
         [6, 4, 5, 3, 1, 2]
       ];
       const puzzle = [
-        [1, 0, 3, 0, 5, 6],
-        [0, 5, 0, 0, 0, 0],
-        [0, 0, 0, 5, 6, 0],
-        [0, 6, 4, 0, 0, 0],
-        [0, 0, 0, 0, 4, 0],
-        [6, 4, 0, 3, 0, 2]
+        [1, 2, 3, 4, 5, 6],
+        [0, 5, 0, 1, 0, 0],
+        [0, 3, 1, 5, 0, 4],
+        [5, 6, 4, 2, 3, 0],
+        [3, 0, 2, 6, 4, 0],
+        [6, 4, 5, 3, 0, 0]
       ];
 
       const current = puzzle.map(r => [...r]);
@@ -859,7 +1019,7 @@
             else if (current[r][c] !== solution[r][c]) return;
           }
         }
-        if (complete) { setTimeout(() => { alert('Perfect Sudoku!'); markComplete('sudoku'); }, 300); }
+        if (complete) { setTimeout(() => { showAlert('Perfect Sudoku!', 'You solved the puzzle correctly!'); markComplete('sudoku'); }, 300); }
       }
     }
 
@@ -890,7 +1050,7 @@
             board[i] = !board[i];
             renderQueens();
             if (board.filter(Boolean).length === 4 && checkQueens()) {
-              setTimeout(() => { alert('Brilliant!'); markComplete('queens'); }, 200);
+              setTimeout(() => { showAlert('Brilliant!', 'You placed all 4 queens correctly!'); markComplete('queens'); }, 200);
             }
           };
           el.appendChild(cell);
@@ -947,7 +1107,7 @@
                     flipped.forEach(f => f.card.classList.add('matched'));
                     matched += 2;
                     flipped = [];
-                    if (matched === 8) setTimeout(() => { alert('Amazing!'); markComplete('tango'); }, 300);
+                    if (matched === 8) setTimeout(() => { showAlert('Amazing!', 'You found all the matching pairs!'); markComplete('tango'); }, 300);
                   }, 500);
                 } else {
                   setTimeout(() => {
@@ -968,53 +1128,131 @@
     // ══════════════════════════════════════════════════════════════
     function showFinalPuzzle() {
       document.getElementById('finalSection').classList.add('show');
+
+      // Define the CORRECT mapping: piece ID -> slot position
+      const correctMapping = {
+        0: 0,  // piece 0 goes in slot 0 (top-left)
+        1: 1,  // piece 1 goes in slot 1 (top-right)
+        2: 2,  // piece 2 goes in slot 2 (bottom-left)
+        3: 3   // piece 3 goes in slot 3 (bottom-right)
+      };
+
       const pieces = [
-        { id: 0, src: 'https://via.placeholder.com/140/7a1e30/ffffff?text=1' },
-        { id: 1, src: 'https://via.placeholder.com/140/7a1e30/ffffff?text=2' },
-        { id: 2, src: 'https://via.placeholder.com/140/7a1e30/ffffff?text=3' },
-        { id: 3, src: 'https://via.placeholder.com/140/7a1e30/ffffff?text=4' }
+        { id: 0, src: 'photo9_1.jpg' },
+        { id: 1, src: 'photo9_2.jpg' },
+        { id: 2, src: 'photo9_3.jpg' },
+        { id: 3, src: 'photo9_4.jpg' }
       ];
 
-      const pool = document.getElementById('piecesPool');
-      pool.innerHTML = '';
-      pieces.forEach(p => {
-        const wrap = document.createElement('div');
-        wrap.className = 'piece-wrap';
-        wrap.dataset.id = p.id;
-        wrap.innerHTML = `<img src="${p.src}" class="puzzle-piece" draggable="true">`;
-        wrap.ondragstart = (e) => e.dataTransfer.setData('pieceId', p.id);
-        wrap.onclick = () => quickPlace(p.id, pieces);
-        pool.appendChild(wrap);
-      });
+      // Scramble the pieces initially
+      const scrambledPieces = [...pieces].sort(() => Math.random() - 0.5);
 
-      document.querySelectorAll('.puzzle-slot').forEach(slot => {
-        slot.ondragover = (e) => e.preventDefault();
-        slot.ondrop = (e) => {
-          e.preventDefault();
-          const pieceId = parseInt(e.dataTransfer.getData('pieceId'));
-          placePiece(pieceId, parseInt(slot.dataset.slot), pieces);
-        };
-      });
-    }
+      const slotState = {}; // Track which piece is in which slot
 
-    function quickPlace(pieceId, pieces) {
-      const emptySlot = [...document.querySelectorAll('.puzzle-slot')].find(s => !s.classList.contains('filled'));
-      if (emptySlot) placePiece(pieceId, parseInt(emptySlot.dataset.slot), pieces);
-    }
+      renderPuzzle();
 
-    function placePiece(pieceId, slotId, pieces) {
-      const slot = document.querySelector(`.puzzle-slot[data-slot="${slotId}"]`);
-      const pieceWrap = document.querySelector(`.piece-wrap[data-id="${pieceId}"]`);
-      const pieceData = pieces.find(p => p.id === pieceId);
+      function renderPuzzle() {
+        const pool = document.getElementById('piecesPool');
+        pool.innerHTML = '';
 
-      if (!slot.classList.contains('filled')) {
-        slot.classList.add('filled');
-        slot.innerHTML = `<img src="${pieceData.src}">`;
-        pieceWrap.classList.add('placed');
-        if ([...document.querySelectorAll('.puzzle-slot')].every(s => s.classList.contains('filled'))) {
-          setTimeout(() => { alert('Perfect! You revealed the complete picture 💕'); }, 500);
+        scrambledPieces.forEach(p => {
+          const wrap = document.createElement('div');
+          wrap.className = 'piece-wrap';
+          wrap.dataset.id = p.id;
+
+          // Check if this piece is already placed
+          const isPlaced = Object.values(slotState).includes(p.id);
+          if (isPlaced) {
+            wrap.classList.add('placed');
+          }
+
+          wrap.innerHTML = `<img src="${p.src}" class="puzzle-piece" draggable="true">`;
+          wrap.ondragstart = (e) => e.dataTransfer.setData('pieceId', p.id);
+          wrap.onclick = () => quickPlace(p.id);
+          pool.appendChild(wrap);
+        });
+
+        document.querySelectorAll('.puzzle-slot').forEach(slot => {
+          slot.ondragover = (e) => e.preventDefault();
+          slot.ondrop = (e) => {
+            e.preventDefault();
+            const pieceId = parseInt(e.dataTransfer.getData('pieceId'));
+            placePiece(pieceId, parseInt(slot.dataset.slot));
+          };
+        });
+      }
+
+      function quickPlace(pieceId) {
+        const emptySlot = [...document.querySelectorAll('.puzzle-slot')].find(s => !s.classList.contains('filled'));
+        if (emptySlot) placePiece(pieceId, parseInt(emptySlot.dataset.slot));
+      }
+
+      function placePiece(pieceId, slotId) {
+        const slot = document.querySelector(`.puzzle-slot[data-slot="${slotId}"]`);
+        const pieceData = pieces.find(p => p.id === pieceId);
+        const correctSlot = correctMapping[pieceId];
+
+        // Remove piece from previous slot if it was placed elsewhere
+        Object.keys(slotState).forEach(key => {
+          if (slotState[key] === pieceId) {
+            const oldSlot = document.querySelector(`.puzzle-slot[data-slot="${key}"]`);
+            oldSlot.classList.remove('filled', 'correct');
+            oldSlot.innerHTML = '';
+            delete slotState[key];
+          }
+        });
+
+        if (!slot.classList.contains('filled')) {
+          // Check if piece is being placed in correct slot
+          if (slotId === correctSlot) {
+            // Correct placement
+            slot.classList.add('filled', 'correct');
+            slot.innerHTML = `<img src="${pieceData.src}">`;
+            slotState[slotId] = pieceId;
+
+            renderPuzzle();
+
+            // Check if puzzle is complete
+            if (Object.keys(slotState).length === 4) {
+              setTimeout(() => {
+                document.getElementById('assemblyGrid').classList.add('complete');
+                showAlert('Perfect! 💕', 'You revealed the complete picture!');
+              }, 500);
+            }
+          } else {
+            // Wrong placement - shake and return to pool
+            slot.classList.add('filled');
+            slot.innerHTML = `<img src="${pieceData.src}">`;
+            slot.style.animation = 'shake 0.5s';
+
+            setTimeout(() => {
+              slot.style.animation = '';
+              slot.classList.remove('filled');
+              slot.innerHTML = '';
+              renderPuzzle();
+            }, 500);
+          }
         }
       }
+
+      window.redoPuzzle = function () {
+        // Clear all slots
+        document.querySelectorAll('.puzzle-slot').forEach(slot => {
+          slot.classList.remove('filled', 'correct');
+          slot.innerHTML = '';
+        });
+
+        // Remove complete class
+        document.getElementById('assemblyGrid').classList.remove('complete');
+
+        // Clear slot state
+        Object.keys(slotState).forEach(key => delete slotState[key]);
+
+        // Re-scramble pieces
+        scrambledPieces.sort(() => Math.random() - 0.5);
+
+        renderPuzzle();
+      };
     }
 
     init();
