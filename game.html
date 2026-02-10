@@ -217,6 +217,31 @@
       text-align: center;
     }
 
+    .reset-all-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .reset-all-btn {
+      background: transparent;
+      border: 1px solid rgba(201, 64, 96, 0.3);
+      color: var(--text-muted);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .reset-all-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(201, 64, 96, 0.05);
+    }
+
     .progress-label {
       font-family: 'Playfair Display', serif;
       font-size: 0.7rem;
@@ -278,6 +303,30 @@
       justify-content: center;
       font-size: 0.9rem;
       font-weight: bold;
+    }
+
+    .game-reset {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(201, 64, 96, 0.2);
+      border: 1px solid rgba(201, 64, 96, 0.3);
+      color: var(--text-soft);
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      opacity: 0;
+    }
+
+    .game-card.completed .game-reset {
+      opacity: 1;
+    }
+
+    .game-reset:hover {
+      background: rgba(201, 64, 96, 0.4);
+      color: var(--accent);
     }
 
     .game-title {
@@ -615,6 +664,83 @@
         opacity: 1;
       }
     }
+
+    /* Custom Confirm Modal */
+    .custom-confirm {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(26, 10, 14, 0.95);
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s;
+    }
+
+    .custom-confirm.show {
+      display: flex;
+    }
+
+    .custom-confirm-content {
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      border-radius: 16px;
+      padding: 40px 30px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(201, 64, 96, 0.3);
+      animation: slideUp 0.3s;
+    }
+
+    .custom-confirm-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--text-title);
+      margin-bottom: 15px;
+    }
+
+    .custom-confirm-message {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 25px;
+      line-height: 1.6;
+    }
+
+    .custom-confirm-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .custom-confirm-btn {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: 'Playfair Display', serif;
+      font-size: 0.8rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .custom-confirm-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .custom-confirm-btn.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .custom-confirm-btn.primary:hover {
+      background: var(--accent-dim);
+    }
   </style>
 </head>
 
@@ -642,11 +768,27 @@
     </div>
   </div>
 
+  <!-- Custom Confirm Modal -->
+  <div class="custom-confirm" id="customConfirm">
+    <div class="custom-confirm-content">
+      <h2 class="custom-confirm-title" id="confirmTitle">Confirm</h2>
+      <p class="custom-confirm-message" id="confirmMessage">Are you sure?</p>
+      <div class="custom-confirm-buttons">
+        <button class="custom-confirm-btn" onclick="closeConfirm(false)">Cancel</button>
+        <button class="custom-confirm-btn primary" onclick="closeConfirm(true)">Confirm</button>
+      </div>
+    </div>
+  </div>
+
   <div class="page">
     <div class="divider"></div>
     <h1 class="page-title">Puzzle Quest</h1>
     <p class="page-subtitle">Unlock the Mystery</p>
     <p class="instructions">Complete all 4 puzzles to earn the pieces, then assemble them to reveal your surprise.</p>
+
+    <div class="reset-all-container">
+      <button class="reset-all-btn" onclick="resetAllGames()">Reset All Games</button>
+    </div>
 
     <div class="progress-bar">
       <div class="progress-label"><span id="progressText">0 / 4 Completed</span></div>
@@ -657,24 +799,28 @@
 
     <div class="games-grid">
       <div class="game-card" id="card-zip">
+        <button class="game-reset" onclick="resetGame('zip', event)">Reset</button>
         <h3 class="game-title">Heart Zip</h3>
         <p class="game-desc">Connect the path from 1 to 27 in the shape of a heart.</p>
         <button class="game-btn" onclick="openGame('zip')">Play</button>
       </div>
 
       <div class="game-card" id="card-sudoku">
+        <button class="game-reset" onclick="resetGame('sudoku', event)">Reset</button>
         <h3 class="game-title">6x6 Sudoku</h3>
         <p class="game-desc">Fill the grid with 1-6. Each 2x3 box must be unique.</p>
         <button class="game-btn" onclick="openGame('sudoku')">Play</button>
       </div>
 
       <div class="game-card" id="card-queens">
+        <button class="game-reset" onclick="resetGame('queens', event)">Reset</button>
         <h3 class="game-title">4 Queens</h3>
         <p class="game-desc">Place 4 queens on the board so none can attack each other.</p>
         <button class="game-btn" onclick="openGame('queens')">Play</button>
       </div>
 
       <div class="game-card" id="card-tango">
+        <button class="game-reset" onclick="resetGame('tango', event)">Reset</button>
         <h3 class="game-title">Memory Match</h3>
         <p class="game-desc">Find all 4 matching pairs of hearts.</p>
         <button class="game-btn" onclick="openGame('tango')">Play</button>
@@ -717,6 +863,26 @@
       document.getElementById('customAlert').classList.remove('show');
     }
 
+    // ── CUSTOM CONFIRM SYSTEM ──
+    let confirmCallback = null;
+
+    function showConfirm(title, message) {
+      return new Promise((resolve) => {
+        confirmCallback = resolve;
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmMessage').textContent = message;
+        document.getElementById('customConfirm').classList.add('show');
+      });
+    }
+
+    function closeConfirm(result) {
+      document.getElementById('customConfirm').classList.remove('show');
+      if (confirmCallback) {
+        confirmCallback(result);
+        confirmCallback = null;
+      }
+    }
+
     // ── STATE ──
     let completed = JSON.parse(localStorage.getItem('gamesCompleted') || '{"zip":false,"sudoku":false,"queens":false,"tango":false}');
 
@@ -732,6 +898,39 @@
       document.getElementById('progressFill').style.width = (count * 25) + '%';
       Object.keys(completed).forEach(game => {
         if (completed[game]) document.getElementById(`card-${game}`).classList.add('completed');
+      });
+    }
+
+    function resetGame(game, event) {
+      event.stopPropagation();
+      const gameName = game.charAt(0).toUpperCase() + game.slice(1).replace('zip', 'Heart Zip').replace('sudoku', '6x6 Sudoku').replace('queens', '4 Queens').replace('tango', 'Memory Match');
+
+      showConfirm('Reset Game?', `Are you sure you want to reset ${gameName}? This will erase your progress for this game.`).then((confirmed) => {
+        if (confirmed) {
+          completed[game] = false;
+          localStorage.setItem('gamesCompleted', JSON.stringify(completed));
+          document.getElementById(`card-${game}`).classList.remove('completed');
+          updateProgress();
+
+          // Hide final puzzle if it was showing
+          if (!allCompleted()) {
+            document.getElementById('finalSection').classList.remove('show');
+          }
+        }
+      });
+    }
+
+    function resetAllGames() {
+      showConfirm('Reset All Games?', 'Are you sure you want to reset ALL games? This will erase all your progress and you will need to complete all puzzles again.').then((confirmed) => {
+        if (confirmed) {
+          completed = { zip: false, sudoku: false, queens: false, tango: false };
+          localStorage.setItem('gamesCompleted', JSON.stringify(completed));
+          Object.keys(completed).forEach(game => {
+            document.getElementById(`card-${game}`).classList.remove('completed');
+          });
+          updateProgress();
+          document.getElementById('finalSection').classList.remove('show');
+        }
       });
     }
 

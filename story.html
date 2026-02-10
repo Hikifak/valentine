@@ -1,275 +1,1198 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Our Story</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Lora:ital@0;1&display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    --bg:#1a0a0e; --glow:rgba(180,50,70,0.25); --accent:#c94060;
-    --accent-dim:#7a1e30; --text:#f5e6e8; --text-soft:#d4b0b8;
-    --text-muted:#9a6b7a; --text-title:#f0d0d5;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Story</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,500&family=Lora:ital@0;1&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #1a0a0e;
+      --glow: rgba(180, 50, 70, 0.25);
+      --accent: #c94060;
+      --accent-dim: #7a1e30;
+      --text: #f5e6e8;
+      --text-soft: #d4b0b8;
+      --text-muted: #9a6b7a;
+      --text-title: #f0d0d5;
+    }
 
-  body {
-    background:var(--bg); color:var(--text);
-    font-family:'Lora',serif; min-height:100vh;
-    overflow-x:hidden; position:relative;
-  }
-  body::before {
-    content:''; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
-    width:700px; height:700px;
-    background:radial-gradient(circle,var(--glow) 0%,transparent 70%);
-    pointer-events:none; z-index:0;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* Nav */
-  nav {
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    display:flex; justify-content:center; gap:24px; padding:18px 12px;
-    background:linear-gradient(180deg,rgba(26,10,14,0.9) 0%,transparent 100%);
-  }
-  nav a {
-    color:var(--text-muted); text-decoration:none;
-    font-family:'Playfair Display',serif; font-size:0.82rem;
-    letter-spacing:2.5px; text-transform:uppercase; transition:color 0.3s; position:relative; z-index:1;
-  }
-  nav a:hover, nav a.active{color:var(--accent);}
-  nav a.active::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--accent);}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-  /* Petals */
-  .petal{position:fixed;border-radius:50% 0 50% 50%;opacity:0;background:radial-gradient(circle,var(--accent),var(--accent-dim));animation:fall linear infinite;z-index:0;pointer-events:none;}
-  .petal:nth-child(1){left:5%;animation-duration:9s;animation-delay:0s;width:9px;height:9px}
-  .petal:nth-child(2){left:20%;animation-duration:12s;animation-delay:3s;width:7px;height:7px}
-  .petal:nth-child(3){left:45%;animation-duration:10s;animation-delay:5s;width:11px;height:11px}
-  .petal:nth-child(4){left:70%;animation-duration:11s;animation-delay:1.5s;width:8px;height:8px}
-  .petal:nth-child(5){left:88%;animation-duration:9s;animation-delay:4s;width:10px;height:10px}
-  @keyframes fall{0%{top:-20px;opacity:0;transform:rotate(0deg) translateX(0)}10%{opacity:0.7}90%{opacity:0.4}100%{top:105vh;opacity:0;transform:rotate(360deg) translateX(40px)}}
+    body::before {
+      content: '';
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  /* ── PAGE HEADER ── */
-  .page-header {
-    position:relative; z-index:1;
-    text-align:center; padding:130px 24px 60px;
-  }
-  .divider{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:0 auto 24px;}
-  .page-title {
-    font-family:'Playfair Display',serif; font-size:2.6rem; font-weight:400; font-style:italic;
-    color:var(--text-title); margin-bottom:8px;
-  }
-  .page-subtitle {
-    font-family:'Playfair Display',serif; font-size:0.78rem; color:var(--text-muted);
-    letter-spacing:3px; text-transform:uppercase;
-  }
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 18px 12px;
+      background: linear-gradient(180deg, rgba(26, 10, 14, 0.9) 0%, transparent 100%);
+    }
 
-  /* ── TIMELINE ── */
-  .timeline {
-    position:relative; z-index:1;
-    max-width:640px; margin:0 auto;
-    padding:0 24px 100px;
-  }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.82rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+      z-index: 1;
+    }
 
-  /* Vertical line */
-  .timeline::before {
-    content:''; position:absolute;
-    left:50%; transform:translateX(-50%);
-    top:0; bottom:0; width:1px;
-    background:linear-gradient(180deg, var(--accent) 0%, var(--accent-dim) 60%, transparent 100%);
-  }
+    nav a:hover,
+    nav a.active {
+      color: var(--accent);
+    }
 
-  /* Chapter entry */
-  .chapter {
-    position:relative; width:50%; padding-bottom:50px;
-    opacity:0; transform:translateY(30px);
-    transition:opacity 0.7s ease, transform 0.7s ease;
-  }
-  .chapter.visible { opacity:1; transform:translateY(0); }
+    nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--accent);
+    }
 
-  /* Alternate left / right */
-  .chapter:nth-child(odd)  { left:0; padding-right:40px; text-align:right; }
-  .chapter:nth-child(even) { left:50%; padding-left:40px; text-align:left; }
+    /* Petals */
+    .petal {
+      position: fixed;
+      border-radius: 50% 0 50% 50%;
+      opacity: 0;
+      background: radial-gradient(circle, var(--accent), var(--accent-dim));
+      animation: fall linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-  /* Dot on the line */
-  .chapter .dot {
-    position:absolute; top:6px;
-    width:14px; height:14px; border-radius:50%;
-    background:var(--accent); border:3px solid var(--bg);
-    box-shadow:0 0 10px rgba(201,64,96,0.45);
-  }
-  .chapter:nth-child(odd)  .dot { right:-7px; }
-  .chapter:nth-child(even) .dot { left:-7px; }
+    .petal:nth-child(1) {
+      left: 5%;
+      animation-duration: 9s;
+      animation-delay: 0s;
+      width: 9px;
+      height: 9px
+    }
 
-  /* Card content */
-  .chapter-card {
-    background:rgba(201,64,96,0.05);
-    border:1px solid rgba(201,64,96,0.15);
-    border-radius:14px; padding:26px 24px;
-    transition:border-color 0.3s, box-shadow 0.3s;
-  }
-  .chapter-card:hover {
-    border-color:rgba(201,64,96,0.3);
-    box-shadow:0 4px 24px rgba(0,0,0,0.25);
-  }
+    .petal:nth-child(2) {
+      left: 20%;
+      animation-duration: 12s;
+      animation-delay: 3s;
+      width: 7px;
+      height: 7px
+    }
 
-  .chapter-number {
-    font-family:'Playfair Display',serif; font-size:0.68rem;
-    color:var(--accent); letter-spacing:2.5px; text-transform:uppercase;
-    margin-bottom:8px; display:block;
-  }
-  .chapter-title {
-    font-family:'Playfair Display',serif; font-style:italic;
-    font-size:1.25rem; color:var(--text-title); margin-bottom:10px;
-    font-weight:400;
-  }
-  .chapter-text {
-    font-size:0.88rem; line-height:1.85; color:var(--text-soft); font-style:italic;
-  }
+    .petal:nth-child(3) {
+      left: 45%;
+      animation-duration: 10s;
+      animation-delay: 5s;
+      width: 11px;
+      height: 11px
+    }
 
-  /* End heart */
-  .timeline-end {
-    text-align:center; padding-top:10px; position:relative; z-index:1;
-  }
-  .timeline-end .end-heart { width:36px; height:36px; margin:0 auto; opacity:0.5; }
-  .timeline-end .end-heart svg { width:100%; height:100%; fill:var(--accent); }
+    .petal:nth-child(4) {
+      left: 70%;
+      animation-duration: 11s;
+      animation-delay: 1.5s;
+      width: 8px;
+      height: 8px
+    }
 
-  /* ── MOBILE ── */
-  /* On mobile, collapse to single column (no left/right alternation) */
-  @media(max-width:600px){
-    nav{gap:16px;padding:14px 8px;}
-    nav a{font-size:0.72rem;letter-spacing:1.8px;}
-    .page-header{padding:110px 20px 40px;}
-    .page-title{font-size:2rem;}
+    .petal:nth-child(5) {
+      left: 88%;
+      animation-duration: 9s;
+      animation-delay: 4s;
+      width: 10px;
+      height: 10px
+    }
 
-    .timeline{padding:0 20px 80px;}
-    /* Move line to the left */
-    .timeline::before { left:18px; transform:none; }
+    @keyframes fall {
+      0% {
+        top: -20px;
+        opacity: 0;
+        transform: rotate(0deg) translateX(0)
+      }
 
-    /* All chapters become left-aligned single column */
-    .chapter { width:100%; left:0 !important; padding-right:0 !important; padding-left:44px !important; text-align:left !important; }
-    .chapter .dot { left:11px !important; right:auto !important; }
+      10% {
+        opacity: 0.7
+      }
 
-    .chapter-title{font-size:1.1rem;}
-    .chapter-text{font-size:0.82rem;}
-    .chapter-card{padding:20px 18px;}
-  }
-  @media(max-width:380px){
-    .page-title{font-size:1.6rem;}
-    .timeline::before{left:14px;}
-    .chapter{padding-left:36px !important;}
-    .chapter .dot{left:7px !important; width:12px; height:12px;}
-    .chapter-card{padding:16px 14px;}
-    .chapter-text{font-size:0.78rem;}
-  }
-</style>
+      90% {
+        opacity: 0.4
+      }
+
+      100% {
+        top: 105vh;
+        opacity: 0;
+        transform: rotate(360deg) translateX(40px)
+      }
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 130px 24px 60px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 0 auto 24px;
+    }
+
+    .page-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-title);
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    /* Vertical line */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dim) 60%, transparent 100%);
+    }
+
+    /* Chapter entry */
+    .chapter {
+      position: relative;
+      width: 50%;
+      padding-bottom: 50px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .chapter.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Alternate left / right */
+    .chapter:nth-child(odd) {
+      left: 0;
+      padding-right: 40px;
+      text-align: right;
+    }
+
+    .chapter:nth-child(even) {
+      left: 50%;
+      padding-left: 40px;
+      text-align: left;
+    }
+
+    /* Dot on the line */
+    .chapter .dot {
+      position: absolute;
+      top: 6px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 10px rgba(201, 64, 96, 0.45);
+    }
+
+    .chapter:nth-child(odd) .dot {
+      right: -7px;
+    }
+
+    .chapter:nth-child(even) .dot {
+      left: -7px;
+    }
+
+    /* Card content */
+    .chapter-card {
+      background: rgba(201, 64, 96, 0.05);
+      border: 1px solid rgba(201, 64, 96, 0.15);
+      border-radius: 14px;
+      padding: 26px 24px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .chapter-card:hover {
+      border-color: rgba(201, 64, 96, 0.3);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    .chapter-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--text-title);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .chapter-text {
+      font-size: 0.88rem;
+      line-height: 1.85;
+      color: var(--text-soft);
+      font-style: italic;
+    }
+
+    /* End heart */
+    .timeline-end {
+      text-align: center;
+      padding-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-end .end-heart {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      opacity: 0.5;
+    }
+
+    .timeline-end .end-heart svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--accent);
+    }
+
+    /* ═══════════════════════════════════════
+     MUSIC PLAYER
+  ═══════════════════════════════════════ */
+    #music-player {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    /* Collapsed toggle button */
+    #music-toggle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(26, 10, 14, 0.88);
+      border: 1px solid rgba(201, 64, 96, 0.4);
+      box-shadow: 0 0 18px rgba(201, 64, 96, 0.2), 0 4px 16px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      transition: all 0.3s;
+      outline: none;
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
+    }
+
+    #music-toggle:hover {
+      border-color: rgba(201, 64, 96, 0.7);
+      box-shadow: 0 0 26px rgba(201, 64, 96, 0.35), 0 4px 20px rgba(0, 0, 0, 0.5);
+      transform: scale(1.07);
+    }
+
+    #music-toggle svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--accent);
+      transition: transform 0.3s;
+    }
+
+    #music-toggle.playing svg {
+      animation: pulse-icon 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-icon {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.18);
+      }
+    }
+
+    /* Expanded panel */
+    #music-panel {
+      background: rgba(26, 10, 14, 0.94);
+      border: 1px solid rgba(201, 64, 96, 0.22);
+      border-radius: 18px;
+      padding: 20px 18px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(201, 64, 96, 0.1);
+      width: 270px;
+      transform: scale(0.88) translateY(10px);
+      transform-origin: bottom right;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(.22, 1, .36, 1), opacity 0.3s;
+    }
+
+    #music-panel.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .mp-label {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .mp-label::before {
+      content: '';
+      display: block;
+      width: 16px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* Now playing info */
+    .mp-now-playing {
+      margin-bottom: 16px;
+      min-height: 36px;
+      text-align: center;
+    }
+
+    .mp-track-name {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--text-title);
+      line-height: 1.4;
+      transition: opacity 0.3s;
+    }
+
+    .mp-track-artist {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Waveform bars (visual only) */
+    .mp-wave {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      height: 24px;
+      margin-bottom: 14px;
+    }
+
+    .mp-wave span {
+      display: block;
+      width: 3px;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0.5;
+      animation: none;
+      height: 4px;
+      transition: height 0.3s;
+    }
+
+    .mp-wave.active span {
+      animation: wave-bar 1.1s ease-in-out infinite;
+      opacity: 0.75;
+    }
+
+    .mp-wave.active span:nth-child(1) {
+      animation-delay: 0s;
+      animation-duration: 0.9s;
+    }
+
+    .mp-wave.active span:nth-child(2) {
+      animation-delay: 0.15s;
+      animation-duration: 1.1s;
+    }
+
+    .mp-wave.active span:nth-child(3) {
+      animation-delay: 0.3s;
+      animation-duration: 0.8s;
+    }
+
+    .mp-wave.active span:nth-child(4) {
+      animation-delay: 0.1s;
+      animation-duration: 1.2s;
+    }
+
+    .mp-wave.active span:nth-child(5) {
+      animation-delay: 0.25s;
+      animation-duration: 1.0s;
+    }
+
+    .mp-wave.active span:nth-child(6) {
+      animation-delay: 0.05s;
+      animation-duration: 0.85s;
+    }
+
+    .mp-wave.active span:nth-child(7) {
+      animation-delay: 0.2s;
+      animation-duration: 1.15s;
+    }
+
+    @keyframes wave-bar {
+
+      0%,
+      100% {
+        height: 4px;
+      }
+
+      50% {
+        height: 18px;
+      }
+    }
+
+    /* Controls row */
+    .mp-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .mp-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--text-muted);
+      transition: color 0.2s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .mp-btn:hover {
+      color: var(--accent);
+      transform: scale(1.15);
+    }
+
+    .mp-btn.main-btn {
+      width: 42px;
+      height: 42px;
+      background: rgba(201, 64, 96, 0.15);
+      border: 1px solid rgba(201, 64, 96, 0.3);
+      color: var(--accent);
+      transition: all 0.25s;
+    }
+
+    .mp-btn.main-btn:hover {
+      background: rgba(201, 64, 96, 0.28);
+      border-color: rgba(201, 64, 96, 0.6);
+      transform: scale(1.1);
+    }
+
+    .mp-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .mp-btn.main-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Volume */
+    .mp-volume {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .mp-volume svg {
+      width: 14px;
+      height: 14px;
+      fill: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .mp-vol-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      height: 2px;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      background: linear-gradient(to right, var(--accent) var(--vol-pct, 40%), rgba(201, 64, 96, 0.2) var(--vol-pct, 40%));
+    }
+
+    .mp-vol-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 6px rgba(201, 64, 96, 0.5);
+      transition: transform 0.2s;
+    }
+
+    .mp-vol-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.3);
+    }
+
+    /* Song list */
+    .mp-divider {
+      height: 1px;
+      background: rgba(201, 64, 96, 0.12);
+      margin: 16px 0;
+    }
+
+    .mp-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .mp-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .mp-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .mp-list::-webkit-scrollbar-thumb {
+      background: rgba(201, 64, 96, 0.25);
+      border-radius: 3px;
+    }
+
+    .mp-song {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .mp-song:hover {
+      background: rgba(201, 64, 96, 0.08);
+    }
+
+    .mp-song.active {
+      background: rgba(201, 64, 96, 0.12);
+      border-color: rgba(201, 64, 96, 0.2);
+    }
+
+    .mp-song-num {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      width: 14px;
+      text-align: center;
+      flex-shrink: 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .mp-song.active .mp-song-num {
+      color: var(--accent);
+    }
+
+    .mp-song-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .mp-song-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.2s;
+    }
+
+    .mp-song.active .mp-song-title {
+      color: var(--text-title);
+    }
+
+    .mp-song-artist {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .mp-song-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0;
+      flex-shrink: 0;
+      transition: opacity 0.2s;
+    }
+
+    .mp-song.active .mp-song-dot {
+      opacity: 1;
+    }
+
+    /* Upload area */
+    .mp-upload-area {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px dashed rgba(201, 64, 96, 0.25);
+      border-radius: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .mp-upload-area:hover {
+      border-color: rgba(201, 64, 96, 0.5);
+      background: rgba(201, 64, 96, 0.06);
+    }
+
+    .mp-upload-area input {
+      display: none;
+    }
+
+    .mp-upload-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .mp-upload-label svg {
+      width: 13px;
+      height: 13px;
+      fill: var(--text-muted);
+    }
+
+    /* ── MOBILE ── */
+    @media(max-width:600px) {
+      nav {
+        gap: 16px;
+        padding: 14px 8px;
+      }
+
+      nav a {
+        font-size: 0.72rem;
+        letter-spacing: 1.8px;
+      }
+
+      .page-header {
+        padding: 110px 20px 40px;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .timeline {
+        padding: 0 20px 80px;
+      }
+
+      .timeline::before {
+        left: 18px;
+        transform: none;
+      }
+
+      .chapter {
+        width: 100%;
+        left: 0 !important;
+        padding-right: 0 !important;
+        padding-left: 44px !important;
+        text-align: left !important;
+      }
+
+      .chapter .dot {
+        left: 11px !important;
+        right: auto !important;
+      }
+
+      .chapter-title {
+        font-size: 1.1rem;
+      }
+
+      .chapter-text {
+        font-size: 0.82rem;
+      }
+
+      .chapter-card {
+        padding: 20px 18px;
+      }
+
+      #music-player {
+        bottom: 18px;
+        right: 16px;
+      }
+
+      #music-panel {
+        width: 240px;
+      }
+    }
+
+    @media(max-width:380px) {
+      .page-title {
+        font-size: 1.6rem;
+      }
+
+      .timeline::before {
+        left: 14px;
+      }
+
+      .chapter {
+        padding-left: 36px !important;
+      }
+
+      .chapter .dot {
+        left: 7px !important;
+        width: 12px;
+        height: 12px;
+      }
+
+      .chapter-card {
+        padding: 16px 14px;
+      }
+
+      .chapter-text {
+        font-size: 0.78rem;
+      }
+
+      #music-panel {
+        width: 210px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<nav>
-  <a href="index.html">Home</a>
-  <a href="story.html" class="active">Story</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="game.html">Game</a>
-</nav>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="story.html" class="active">Story</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="game.html">Game</a>
+  </nav>
 
-<div class="petal"></div><div class="petal"></div><div class="petal"></div>
-<div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
+  <div class="petal"></div>
 
-<!-- Header -->
-<div class="page-header">
-  <div class="divider"></div>
-  <h1 class="page-title">Our Story</h1>
-  <p class="page-subtitle">How it all began</p>
-</div>
+  <!-- Header -->
+  <div class="page-header">
+    <div class="divider"></div>
+    <h1 class="page-title">Our Story</h1>
+    <p class="page-subtitle">How it all began</p>
+  </div>
 
-<!-- Timeline -->
-<!-- EDIT EACH CHAPTER: change the title and text to your own words -->
-<div class="timeline">
-
-  <div class="chapter">
-    <div class="dot"></div>
-    <div class="chapter-card">
-      <span class="chapter-number">Chapter One</span>
-      <h2 class="chapter-title">The Beginning - 27/10/2024</h2>
-      <p class="chapter-text">
-        Stepping out of church that day, a complete stranger approached me to ask my age and if I was familiar with MJO. She
-        invited me along to their 'Sobhiye,' and for some reason, I agreed. I had no idea then that this spontaneous decision
-        would mark the beginning of such a significant chapter in my life.
-      </p>
+  <!-- Timeline -->
+  <!-- EDIT EACH CHAPTER: change the title and text to your own words -->
+  <div class="timeline">
+  
+    <div class="chapter">
+      <div class="dot"></div>
+      <div class="chapter-card">
+        <span class="chapter-number">Chapter One</span>
+        <h2 class="chapter-title">The Beginning - 27/10/2024</h2>
+        <p class="chapter-text">
+          Stepping out of church that day, a complete stranger approached me to ask my age and if I was familiar with MJO.
+          She
+          invited me along to their 'Sobhiye,' and for some reason, I agreed. I had no idea then that this spontaneous
+          decision
+          would mark the beginning of such a significant chapter in my life.
+        </p>
+      </div>
+    </div>
+  
+    <div class="chapter">
+      <div class="dot"></div>
+      <div class="chapter-card">
+        <span class="chapter-number">Chapter Two</span>
+        <h2 class="chapter-title">The First Conversations</h2>
+        <p class="chapter-text">
+          Our interactions evolved from brief, polite exchanges to deep, meaningful discussions. Those frequent ‘muted’
+          video
+          calls during study sessions, along with our first awkward attempts at hugging (including the famous '$5' hugs)
+          and the
+          nervous excitement of holding hands, gave me the sense that a connection was growing, even if I wasn't entirely
+          sure what
+          it meant at the time.
+        </p>
+      </div>
+    </div>
+  
+    <div class="chapter">
+      <div class="dot"></div>
+      <div class="chapter-card">
+        <span class="chapter-number">Chapter Three</span>
+        <h2 class="chapter-title">Our Special Day - 25/02/2025</h2>
+        <p class="chapter-text">
+          Those late-night talks and deep conversations allowed us to truly know one another, leading up to the most
+          beautiful
+          moment. On February 25, 2025, after the 'what are we?' question finally came up, I decided to make it official.
+          It
+          happened on 'stupid WhatsApp', I asked you to be my girlfriend via text while we were on a muted call. Even
+          though we
+          were silent, our reactions were louder than any words could ever be.
+        </p>
+      </div>
+    </div>
+  
+    <div class="chapter">
+      <div class="dot"></div>
+      <div class="chapter-card">
+        <span class="chapter-number">Chapter Four</span>
+        <h2 class="chapter-title">Our Memories</h2>
+        <p class="chapter-text">
+          Following that day, our bond deepened as we explored new places and shared new experiences. From our quiet
+          coffee dates
+          and visiting cool museums to escaping a 'lab' together, I found joy in things I never would have imagined. I'll
+          never
+          forget 'fighting' a monkey at the zoo or seeing you fly past me on your bicycle while I was still picking myself
+          up from
+          a weird fall. It's not just about the activities, though, it's because I was doing them with you. You have a way
+          of
+          making every moment feel significant.
+        </p>
+      </div>
+    </div>
+  
+    <div class="chapter">
+      <div class="dot"></div>
+      <div class="chapter-card">
+        <span class="chapter-number">Chapter Five</span>
+        <h2 class="chapter-title">The Distance...</h2>
+        <p class="chapter-text">
+          Even though we are now more than 4,000 km apart, I see how hard you're working to adapt to your new environment
+          and
+          lifestyle. I am so incredibly proud of you; I know you're acing everything you do, and I will be right there
+          cheering
+          you on through every step of your life. I'll always be your biggest supporter, and I am waiting impatiently for
+          the day
+          I have you back. I love you so much ❤️.
+        </p>
+      </div>
+    </div>
+  
+    <!-- You can add more chapters by copying the block above -->
+  
+    <div class="timeline-end">
+      <div class="end-heart">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+      </div>
     </div>
   </div>
 
-  <div class="chapter">
-    <div class="dot"></div>
-    <div class="chapter-card">
-      <span class="chapter-number">Chapter Two</span>
-      <h2 class="chapter-title">The First Conversations</h2>
-      <p class="chapter-text">
-        Our interactions evolved from brief, polite exchanges to deep, meaningful discussions. Those frequent ‘muted’ video
-        calls during study sessions, along with our first awkward attempts at hugging (including the famous '$5' hugs) and the
-        nervous excitement of holding hands, gave me the sense that a connection was growing, even if I wasn't entirely sure what
-        it meant at the time.
-      </p>
+  <!-- ═══════════════════════════════════
+     MUSIC PLAYER
+═══════════════════════════════════ -->
+  <div id="music-player">
+
+    <!-- Expanded panel -->
+    <div id="music-panel">
+      <div class="mp-label">Now Playing</div>
+
+      <!-- Track info -->
+      <div class="mp-now-playing">
+        <div class="mp-track-name" id="mp-track-name">— Select a song —</div>
+        <div class="mp-track-artist" id="mp-track-artist"></div>
+      </div>
+
+      <!-- Waveform -->
+      <div class="mp-wave" id="mp-wave">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+
+      <!-- Controls -->
+      <div class="mp-controls">
+        <button class="mp-btn" id="mp-prev" title="Previous">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 6h2v12H6V6zm3.5 6l8.5 6V6l-8.5 6z" />
+          </svg>
+        </button>
+        <button class="mp-btn main-btn" id="mp-play" title="Play / Pause">
+          <!-- Play icon -->
+          <svg id="icon-play" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7L8 5z" />
+          </svg>
+          <!-- Pause icon (hidden) -->
+          <svg id="icon-pause" viewBox="0 0 24 24" style="display:none">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+          </svg>
+        </button>
+        <button class="mp-btn" id="mp-next" title="Next">
+          <svg viewBox="0 0 24 24">
+            <path d="M6 18l8.5-6L6 6v12zm2.5-6l-2.5 4V8l2.5 4zm3-6v12h2V6h-2zm5 0h-2v12h2V6z" style="display:none" />
+            <path d="M16 6h2v12h-2V6zM6 6l8.5 6L6 18V6z" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Volume -->
+      <div class="mp-volume">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+        </svg>
+        <input type="range" class="mp-vol-slider" id="mp-volume" min="0" max="100" value="40">
+      </div>
+
+      <div class="mp-divider"></div>
+
+      <!-- Song list -->
+      <div class="mp-list" id="mp-list">
+        <!-- Populated by JS -->
+      </div>
+
     </div>
+
+    <!-- Toggle button -->
+    <button id="music-toggle" title="Music">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z" />
+      </svg>
+    </button>
   </div>
 
-  <div class="chapter">
-    <div class="dot"></div>
-    <div class="chapter-card">
-      <span class="chapter-number">Chapter Three</span>
-      <h2 class="chapter-title">Our Special Day - 25/02/2025</h2>
-      <p class="chapter-text">
-        Those late-night talks and deep conversations allowed us to truly know one another, leading up to the most beautiful
-        moment. On February 25, 2025, after the 'what are we?' question finally came up, I decided to make it official. It
-        happened on 'stupid WhatsApp', I asked you to be my girlfriend via text while we were on a muted call. Even though we
-        were silent, our reactions were louder than any words could ever be.
-      </p>
-    </div>
-  </div>
+  <audio id="audio-el"></audio>
 
-  <div class="chapter">
-    <div class="dot"></div>
-    <div class="chapter-card">
-      <span class="chapter-number">Chapter Four</span>
-      <h2 class="chapter-title">Our Favorite Memory</h2>
-      <p class="chapter-text">
-        Share a moment that meant the most to you — a place, a conversation, a laugh you can't forget. Paint the picture so she can relive it.
-      </p>
-    </div>
-  </div>
+  <script>
+    // ── Scroll reveal
+    const chapters = document.querySelectorAll('.chapter');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    chapters.forEach(ch => observer.observe(ch));
 
-  <div class="chapter">
-    <div class="dot"></div>
-    <div class="chapter-card">
-      <span class="chapter-number">Chapter Five</span>
-      <h2 class="chapter-title">What You Mean to Me</h2>
-      <p class="chapter-text">
-        This is where you tell her everything. How she changed your life, what she makes you feel, and why you wrote all of this for her. Make it from the heart.
-      </p>
-    </div>
-  </div>
+    // ══════════════════════════════════════
+    //  MUSIC PLAYER LOGIC
+    // ══════════════════════════════════════
+    const audio = document.getElementById('audio-el');
+    const panel = document.getElementById('music-panel');
+    const toggle = document.getElementById('music-toggle');
+    const playBtn = document.getElementById('mp-play');
+    const prevBtn = document.getElementById('mp-prev');
+    const nextBtn = document.getElementById('mp-next');
+    const volSlider = document.getElementById('mp-volume');
+    const wave = document.getElementById('mp-wave');
+    const trackName = document.getElementById('mp-track-name');
+    const trackArtist = document.getElementById('mp-track-artist');
+    const songList = document.getElementById('mp-list');
+    const fileInput = document.getElementById('mp-file-input');
+    const iconPlay = document.getElementById('icon-play');
+    const iconPause = document.getElementById('icon-pause');
 
-  <!-- You can add more chapters by copying the block above -->
+    // ── SONGS — replace the src paths with your actual audio file paths ──
+    let songs = [
+      { name: 'Still Loving You (Remastered - 2015)', artist: 'Scorpions', url: 'song1.mp3' },
+      { name: 'Livin\' On A Prayer', artist: 'Bon Jovi', url: 'song2.mp3' },
+      { name: 'Et si tu n\'existais pas', artist: 'Joe Dassin', url: 'song3.mp3' },
+    ];
 
-  <div class="timeline-end">
-    <div class="end-heart">
-      <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-    </div>
-  </div>
-</div>
+    let currentIdx = -1;
+    let isPlaying = false;
+    let panelOpen = false;
 
-<script>
-  // Scroll-triggered reveal for chapters
-  const chapters = document.querySelectorAll('.chapter');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+    // Volume
+    audio.volume = 0.40;
+    function updateVolCSS(v) {
+      volSlider.style.setProperty('--vol-pct', v + '%');
+    }
+    updateVolCSS(40);
+
+    volSlider.addEventListener('input', () => {
+      const v = parseInt(volSlider.value);
+      audio.volume = v / 100;
+      updateVolCSS(v);
+    });
+
+    // Toggle panel
+    toggle.addEventListener('click', () => {
+      panelOpen = !panelOpen;
+      panel.classList.toggle('open', panelOpen);
+    });
+
+    // Close panel on outside click
+    document.addEventListener('click', (e) => {
+      if (panelOpen && !panel.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) {
+        panelOpen = false;
+        panel.classList.remove('open');
       }
     });
-  }, { threshold: 0.15 });
 
-  chapters.forEach(ch => observer.observe(ch));
-</script>
+    // Render song list
+    function renderList() {
+      songList.innerHTML = songs.map((s, i) => `
+      <div class="mp-song${i === currentIdx ? ' active' : ''}" data-idx="${i}">
+        <span class="mp-song-num">${i + 1}</span>
+        <div class="mp-song-info">
+          <div class="mp-song-title">${s.name}</div>
+          ${s.artist ? `<div class="mp-song-artist">${s.artist}</div>` : ''}
+        </div>
+        <span class="mp-song-dot"></span>
+      </div>
+    `).join('');
+
+      songList.querySelectorAll('.mp-song').forEach(el => {
+        el.addEventListener('click', () => {
+          const idx = parseInt(el.dataset.idx);
+          loadAndPlay(idx);
+        });
+      });
+    }
+
+    function setPlayState(playing) {
+      isPlaying = playing;
+      iconPlay.style.display = playing ? 'none' : 'block';
+      iconPause.style.display = playing ? 'block' : 'none';
+      wave.classList.toggle('active', playing);
+      toggle.classList.toggle('playing', playing);
+    }
+
+    function loadAndPlay(idx) {
+      if (idx < 0 || idx >= songs.length) return;
+      currentIdx = idx;
+      const s = songs[idx];
+      audio.src = s.url;
+      audio.volume = parseInt(volSlider.value) / 100;
+      audio.play().catch(() => { });
+      trackName.textContent = s.name;
+      trackArtist.textContent = s.artist || '';
+      setPlayState(true);
+      renderList();
+    }
+
+    // Play / pause
+    playBtn.addEventListener('click', () => {
+      if (songs.length === 0) return;
+      if (currentIdx === -1) { loadAndPlay(0); return; }
+      if (isPlaying) {
+        audio.pause();
+        setPlayState(false);
+      } else {
+        audio.play().catch(() => { });
+        setPlayState(true);
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (songs.length === 0) return;
+      const idx = currentIdx <= 0 ? songs.length - 1 : currentIdx - 1;
+      loadAndPlay(idx);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (songs.length === 0) return;
+      const idx = (currentIdx + 1) % songs.length;
+      loadAndPlay(idx);
+    });
+
+    audio.addEventListener('ended', () => {
+      const idx = (currentIdx + 1) % songs.length;
+      loadAndPlay(idx);
+    });
+
+    // Render list, open panel, and auto-play first song on load
+    renderList();
+    panelOpen = true;
+    panel.classList.add('open');
+    loadAndPlay(0);
+  </script>
 </body>
+
 </html>
